@@ -15,9 +15,16 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    supportLibraryVersion = '25.1.1'
+    retrofitVersion = '2.1.0'
+    butterKnifeVersion = '8.4.0'
 }
