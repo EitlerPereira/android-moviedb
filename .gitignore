@@ -40,4 +40,4 @@ captures/
 *.jks
 
 #Android Studio/InteliJ
-./idea
+.idea
