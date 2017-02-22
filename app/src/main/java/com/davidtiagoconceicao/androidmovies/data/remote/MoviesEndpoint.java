@@ -1,7 +1,5 @@
 package com.davidtiagoconceicao.androidmovies.data.remote;
 
-import java.util.List;
-
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -14,8 +12,8 @@ import rx.Observable;
 
 public interface MoviesEndpoint {
 
-    @GET("/movie/upcoming")
-    Observable<List<MovieResponse>> getUpcoming(
+    @GET("movie/upcoming")
+    Observable<UpcomingMoviesResponse> getUpcoming(
             @Query("page") int requestedPage);
 
 }

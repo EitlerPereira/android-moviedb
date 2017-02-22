@@ -3,8 +3,6 @@ package com.davidtiagoconceicao.androidmovies.data.remote;
 import com.davidtiagoconceicao.androidmovies.commons.retrofit.RetrofitServiceGenerator;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
 
-import java.util.List;
-
 import rx.Observable;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -20,10 +18,10 @@ public final class MoviesRemoteRepository {
     public Observable<Movie> getUpcoming(int page) {
         return RetrofitServiceGenerator.generateService(MoviesEndpoint.class)
                 .getUpcoming(page)
-                .flatMapIterable(new Func1<List<MovieResponse>, Iterable<MovieResponse>>() {
+                .flatMapIterable(new Func1<UpcomingMoviesResponse, Iterable<MovieResponse>>() {
                     @Override
-                    public Iterable<MovieResponse> call(List<MovieResponse> movieResponses) {
-                        return movieResponses;
+                    public Iterable<MovieResponse> call(UpcomingMoviesResponse envelopeResponse) {
+                        return envelopeResponse.results();
                     }
                 })
                 .map(new Func1<MovieResponse, Movie>() {
