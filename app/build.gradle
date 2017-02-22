@@ -9,7 +9,8 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_URL", "\"https://api.themoviedb.org/3\""
     }
     buildTypes {
         release {
@@ -45,4 +46,5 @@ dependencies {
     annotationProcessor 'com.google.auto.value:auto-value:1.3'
     provided 'com.ryanharter.auto.value:auto-value-gson:0.4.5'
     annotationProcessor 'com.ryanharter.auto.value:auto-value-gson:0.4.5'
+    annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
 }

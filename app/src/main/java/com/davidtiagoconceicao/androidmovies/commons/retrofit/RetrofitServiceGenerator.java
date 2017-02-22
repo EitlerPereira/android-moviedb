@@ -2,6 +2,8 @@ package com.davidtiagoconceicao.androidmovies.commons.retrofit;
 
 import android.support.annotation.NonNull;
 
+import com.davidtiagoconceicao.androidmovies.BuildConfig;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -20,14 +22,13 @@ public final class RetrofitServiceGenerator {
     private static OkHttpClient okHttpClient;
 
     public static <S> S generateService(
-            @NonNull String baseUrl,
             @NonNull Class<S> serviceClass) {
 
         return new Retrofit.Builder()
                 .client(getOkHttpClient())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(DefaultGsonConverter.getConverter())
-                .baseUrl(baseUrl)
+                .baseUrl(BuildConfig.API_URL)
                 .build()
                 .create(serviceClass);
     }
