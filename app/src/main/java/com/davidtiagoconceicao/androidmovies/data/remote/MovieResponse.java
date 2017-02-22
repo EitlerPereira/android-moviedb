@@ -1,5 +1,7 @@
 package com.davidtiagoconceicao.androidmovies.data.remote;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -20,9 +22,11 @@ public abstract class MovieResponse {
 
     public abstract String overview();
 
+    @Nullable
     @SerializedName("poster_path")
     public abstract String posterPath();
 
+    @Nullable
     @SerializedName("backdrop_path")
     public abstract String backdropPath();
 
