@@ -1,4 +1,4 @@
-package com.davidtiagoconceicao.androidmovies.data.remote;
+package com.davidtiagoconceicao.androidmovies.data.remote.movie;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;

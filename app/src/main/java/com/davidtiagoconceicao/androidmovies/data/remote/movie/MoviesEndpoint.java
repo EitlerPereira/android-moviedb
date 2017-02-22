@@ -1,4 +1,4 @@
-package com.davidtiagoconceicao.androidmovies.data.remote;
+package com.davidtiagoconceicao.androidmovies.data.remote.movie;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -10,7 +10,7 @@ import rx.Observable;
  * Created by david on 22/02/17.
  */
 
-public interface MoviesEndpoint {
+interface MoviesEndpoint {
 
     @GET("movie/upcoming")
     Observable<UpcomingMoviesResponse> getUpcoming(

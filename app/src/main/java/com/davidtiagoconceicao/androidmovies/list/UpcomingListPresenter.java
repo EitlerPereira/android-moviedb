@@ -3,7 +3,7 @@ package com.davidtiagoconceicao.androidmovies.list;
 import android.util.Log;
 
 import com.davidtiagoconceicao.androidmovies.data.Movie;
-import com.davidtiagoconceicao.androidmovies.data.remote.MoviesRemoteRepository;
+import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepository;
 
 import java.util.List;
 

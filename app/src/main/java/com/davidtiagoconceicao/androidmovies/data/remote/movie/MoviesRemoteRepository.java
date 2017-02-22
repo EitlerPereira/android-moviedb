@@ -1,4 +1,4 @@
-package com.davidtiagoconceicao.androidmovies.data.remote;
+package com.davidtiagoconceicao.androidmovies.data.remote.movie;
 
 import com.davidtiagoconceicao.androidmovies.commons.DateFormatUtil;
 import com.davidtiagoconceicao.androidmovies.commons.retrofit.RetrofitServiceGenerator;

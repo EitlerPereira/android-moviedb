@@ -29,7 +29,7 @@ public abstract class Movie implements Parcelable {
 
     public abstract Date releaseDate();
 
-    public abstract List<Integer> genreIds();
+    public abstract List<Long> genreIds();
 
     public static Builder builder() {
         return new AutoValue_Movie.Builder();
@@ -47,7 +47,7 @@ public abstract class Movie implements Parcelable {
 
         public abstract Builder releaseDate(Date value);
 
-        public abstract Builder genreIds(List<Integer> value);
+        public abstract Builder genreIds(List<Long> value);
 
         public abstract Movie build();
     }

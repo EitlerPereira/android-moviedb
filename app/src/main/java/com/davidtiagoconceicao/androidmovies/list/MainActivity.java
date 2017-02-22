@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.davidtiagoconceicao.androidmovies.R;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
-import com.davidtiagoconceicao.androidmovies.data.remote.MoviesRemoteRepository;
+import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepository;
 
 import java.util.List;
 

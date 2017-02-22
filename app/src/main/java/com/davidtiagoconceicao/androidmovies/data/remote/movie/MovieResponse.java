@@ -1,4 +1,4 @@
-package com.davidtiagoconceicao.androidmovies.data.remote;
+package com.davidtiagoconceicao.androidmovies.data.remote.movie;
 
 import android.support.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public abstract class MovieResponse {
     public abstract String releaseDate();
 
     @SerializedName("genre_ids")
-    public abstract List<Integer> genreIds();
+    public abstract List<Long> genreIds();
 
     public static TypeAdapter<MovieResponse> typeAdapter(Gson gson) {
         return new AutoValue_MovieResponse.GsonTypeAdapter(gson);
