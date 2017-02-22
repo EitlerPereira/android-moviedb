@@ -1,6 +1,7 @@
 package com.davidtiagoconceicao.androidmovies.list;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +16,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements UpcomingListContract.View, LoadMoreScrollListener.LoadMoreListener {
+        implements UpcomingListContract.View, LoadMoreScrollListener.LoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private UpcomingListContract.Presenter presenter;
 
     @BindView(R.id.main_movies_recycler)
     RecyclerView recyclerView;
+
+    @BindView(R.id.main_movies_swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private MoviesAdapter moviesAdapter;
 
@@ -34,11 +38,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(
                 moviesAdapter);
 
-        LinearLayoutManager layoutManager =
-                (LinearLayoutManager) recyclerView.getLayoutManager();
-
-        recyclerView.addOnScrollListener(
-                new LoadMoreScrollListener(layoutManager, this));
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         new UpcomingListPresenter(this, new MoviesRemoteRepository());
     }
@@ -67,7 +67,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void showLoading(boolean show) {
+        swipeRefreshLayout.setRefreshing(show);
+    }
+
+    @Override
+    public void clearList() {
+        moviesAdapter.clearList();
+        LinearLayoutManager layoutManager =
+                (LinearLayoutManager) recyclerView.getLayoutManager();
+
+        recyclerView.addOnScrollListener(
+                new LoadMoreScrollListener(layoutManager, this));
+    }
+
+    @Override
     public void onLoadMore() {
         presenter.onLoadMore();
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.refresh();
     }
 }

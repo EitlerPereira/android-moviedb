@@ -6,13 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.davidtiagoconceicao.androidmovies.list.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_movies_recycler"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/main_movies_swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/row_movie" />
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_movies_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/row_movie" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

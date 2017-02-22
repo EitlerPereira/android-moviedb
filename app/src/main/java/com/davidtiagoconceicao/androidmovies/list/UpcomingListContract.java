@@ -15,11 +15,18 @@ import java.util.List;
 final class UpcomingListContract {
 
     interface View extends BaseView<UpcomingListContract.Presenter> {
+
         void addMovies(List<Movie> movie);
+
+        void showLoading(boolean show);
+
+        void clearList();
     }
 
     interface Presenter extends BasePresenter {
 
         void onLoadMore();
+
+        void refresh();
     }
 }

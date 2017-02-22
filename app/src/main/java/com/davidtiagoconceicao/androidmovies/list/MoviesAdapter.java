@@ -60,6 +60,11 @@ final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public void clearList() {
+        this.movies.clear();
+        notifyDataSetChanged();
+    }
+
     static final class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.row_movie_title)

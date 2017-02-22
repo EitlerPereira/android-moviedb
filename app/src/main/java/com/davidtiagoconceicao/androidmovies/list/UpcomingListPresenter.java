@@ -56,7 +56,14 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
         loadMoreItems();
     }
 
+    @Override
+    public void refresh() {
+        currentPageCount = 1;
+        loadMoreItems();
+    }
+
     private void loadMoreItems() {
+        view.showLoading(true);
         compositeSubscription.add(
                 moviesRemoteRepository.getUpcoming(currentPageCount)
                         .toList()
@@ -64,7 +71,7 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
                         .subscribe(new Observer<List<Movie>>() {
                             @Override
                             public void onCompleted() {
-                                Log.d("upcomingList", "onCompleted");
+                                view.showLoading(false);
                             }
 
                             @Override
@@ -75,6 +82,9 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
 
                             @Override
                             public void onNext(List<Movie> movies) {
+                                if (currentPageCount == 1) {
+                                    view.clearList();
+                                }
                                 view.addMovies(movies);
                             }
                         }));
