@@ -1,5 +1,6 @@
 package com.davidtiagoconceicao.androidmovies.data.remote;
 
+import com.davidtiagoconceicao.androidmovies.commons.DateFormatUtil;
 import com.davidtiagoconceicao.androidmovies.commons.retrofit.RetrofitServiceGenerator;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
 
@@ -32,7 +33,8 @@ public final class MoviesRemoteRepository {
                                 .overview(movieResponse.overview())
                                 .posterPath(movieResponse.posterPath())
                                 .backdropPath(movieResponse.backdropPath())
-                                .releaseDate(movieResponse.releaseDate())
+                                .releaseDate(
+                                        DateFormatUtil.parseDate(movieResponse.releaseDate()))
                                 .genreIds(movieResponse.genreIds())
                                 .build();
                     }

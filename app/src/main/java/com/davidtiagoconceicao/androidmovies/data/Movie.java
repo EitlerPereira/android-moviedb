@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public abstract class Movie implements Parcelable {
     @Nullable
     public abstract String backdropPath();
 
-    public abstract String releaseDate();
+    public abstract Date releaseDate();
 
     public abstract List<Integer> genreIds();
 
@@ -44,7 +45,7 @@ public abstract class Movie implements Parcelable {
 
         public abstract Builder backdropPath(String value);
 
-        public abstract Builder releaseDate(String value);
+        public abstract Builder releaseDate(Date value);
 
         public abstract Builder genreIds(List<Integer> value);
 
