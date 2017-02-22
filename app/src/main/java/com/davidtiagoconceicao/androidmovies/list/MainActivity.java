@@ -2,16 +2,20 @@ package com.davidtiagoconceicao.androidmovies.list;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.davidtiagoconceicao.androidmovies.R;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
 import com.davidtiagoconceicao.androidmovies.data.remote.MoviesRemoteRepository;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements UpcomingListContract.View {
+public class MainActivity extends AppCompatActivity
+        implements UpcomingListContract.View, LoadMoreScrollListener.LoadMoreListener {
 
     private UpcomingListContract.Presenter presenter;
 
@@ -29,6 +33,12 @@ public class MainActivity extends AppCompatActivity implements UpcomingListContr
         moviesAdapter = new MoviesAdapter(this);
         recyclerView.setAdapter(
                 moviesAdapter);
+
+        LinearLayoutManager layoutManager =
+                (LinearLayoutManager) recyclerView.getLayoutManager();
+
+        recyclerView.addOnScrollListener(
+                new LoadMoreScrollListener(layoutManager, this));
 
         new UpcomingListPresenter(this, new MoviesRemoteRepository());
     }
@@ -52,7 +62,12 @@ public class MainActivity extends AppCompatActivity implements UpcomingListContr
     }
 
     @Override
-    public void addMovie(Movie movie) {
-        moviesAdapter.addMovie(movie);
+    public void addMovies(List<Movie> movies) {
+        moviesAdapter.addMovie(movies);
+    }
+
+    @Override
+    public void onLoadMore() {
+        presenter.onLoadMore();
     }
 }

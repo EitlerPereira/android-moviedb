@@ -55,9 +55,9 @@ final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder>
         return movies.size();
     }
 
-    void addMovie(Movie movie) {
-        movies.add(movie);
-        notifyItemInserted(movies.size() - 1);
+    void addMovie(List<Movie> movies) {
+        this.movies.addAll(movies);
+        notifyDataSetChanged();
     }
 
     static final class ViewHolder extends RecyclerView.ViewHolder {

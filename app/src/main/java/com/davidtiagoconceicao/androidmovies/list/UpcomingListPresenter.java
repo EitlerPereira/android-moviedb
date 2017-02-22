@@ -5,6 +5,8 @@ import android.util.Log;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
 import com.davidtiagoconceicao.androidmovies.data.remote.MoviesRemoteRepository;
 
+import java.util.List;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -21,6 +23,8 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
     private final UpcomingListContract.View view;
     private final MoviesRemoteRepository moviesRemoteRepository;
 
+    private int currentPageCount;
+
     UpcomingListPresenter(
             UpcomingListContract.View view,
             MoviesRemoteRepository moviesRemoteRepository) {
@@ -34,10 +38,30 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
 
     @Override
     public void onAttach() {
+        if (currentPageCount == 0) {
+            currentPageCount++;
+            loadMoreItems();
+        }
+    }
+
+
+    @Override
+    public void onDetach() {
+        compositeSubscription.clear();
+    }
+
+    @Override
+    public void onLoadMore() {
+        currentPageCount++;
+        loadMoreItems();
+    }
+
+    private void loadMoreItems() {
         compositeSubscription.add(
-                moviesRemoteRepository.getUpcoming(1)
+                moviesRemoteRepository.getUpcoming(currentPageCount)
+                        .toList()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Movie>() {
+                        .subscribe(new Observer<List<Movie>>() {
                             @Override
                             public void onCompleted() {
                                 Log.d("upcomingList", "onCompleted");
@@ -50,14 +74,9 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
                             }
 
                             @Override
-                            public void onNext(Movie movie) {
-                                view.addMovie(movie);
+                            public void onNext(List<Movie> movies) {
+                                view.addMovies(movies);
                             }
                         }));
-    }
-
-    @Override
-    public void onDetach() {
-        compositeSubscription.clear();
     }
 }

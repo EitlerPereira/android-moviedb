@@ -4,6 +4,8 @@ import com.davidtiagoconceicao.androidmovies.BasePresenter;
 import com.davidtiagoconceicao.androidmovies.BaseView;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
 
+import java.util.List;
+
 /**
  * Contract for upcoming movies list.
  * <p>
@@ -13,10 +15,11 @@ import com.davidtiagoconceicao.androidmovies.data.Movie;
 final class UpcomingListContract {
 
     interface View extends BaseView<UpcomingListContract.Presenter> {
-        void addMovie(Movie movie);
+        void addMovies(List<Movie> movie);
     }
 
     interface Presenter extends BasePresenter {
 
+        void onLoadMore();
     }
 }
