@@ -36,7 +36,7 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
     public void onAttach() {
         compositeSubscription.add(
                 moviesRemoteRepository.getUpcoming(1)
-                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<Movie>() {
                             @Override
                             public void onCompleted() {
@@ -51,10 +51,9 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
 
                             @Override
                             public void onNext(Movie movie) {
-                                Log.d("upcomingList", "onNext: " + movie.toString());
+                                view.addMovie(movie);
                             }
-                        })
-        );
+                        }));
     }
 
     @Override
