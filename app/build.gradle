@@ -28,16 +28,16 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0'
 
     // Network & image loading
-    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     compile 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
 
     //rx
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0-SNAPSHOT'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
 
     //Code generators
