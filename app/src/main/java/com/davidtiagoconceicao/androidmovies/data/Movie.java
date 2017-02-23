@@ -31,6 +31,11 @@ public abstract class Movie implements Parcelable {
 
     public abstract List<Long> genreIds();
 
+    @Nullable
+    public abstract List<Genre> genres();
+
+    public abstract Movie withGenres(List<Genre> genres);
+
     public static Builder builder() {
         return new AutoValue_Movie.Builder();
     }
@@ -48,6 +53,8 @@ public abstract class Movie implements Parcelable {
         public abstract Builder releaseDate(Date value);
 
         public abstract Builder genreIds(List<Long> value);
+
+        public abstract Builder genres(List<Genre> value);
 
         public abstract Movie build();
     }

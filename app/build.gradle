@@ -48,4 +48,5 @@ dependencies {
     provided 'com.ryanharter.auto.value:auto-value-gson:0.4.5'
     annotationProcessor 'com.ryanharter.auto.value:auto-value-gson:0.4.5'
     annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+    annotationProcessor 'com.gabrielittner.auto.value:auto-value-with:1.0.0'
 }

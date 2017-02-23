@@ -1,7 +1,7 @@
 package com.davidtiagoconceicao.androidmovies.data.remote.genre;
 
 import com.davidtiagoconceicao.androidmovies.commons.retrofit.RetrofitServiceGenerator;
-import com.davidtiagoconceicao.androidmovies.data.remote.Genre;
+import com.davidtiagoconceicao.androidmovies.data.Genre;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
 
 public final class GenresRemoteRepository {
 
-    public Observable<List<Genre>> getGenres() {
+    public static Observable<Genre> getGenres() {
         return RetrofitServiceGenerator.generateService(GenresEndpoint.class)
                 .getGenres()
                 .map(new Func1<GenresListResponse, List<GenreResponse>>() {
@@ -38,7 +38,6 @@ public final class GenresRemoteRepository {
                         return Genre.create(genreResponse.id(), genreResponse.name());
                     }
                 })
-                .toList()
                 .subscribeOn(Schedulers.io());
     }
 
