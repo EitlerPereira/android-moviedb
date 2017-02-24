@@ -50,11 +50,11 @@ final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder>
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             accentColor = context.getResources()
                     .getColor(
-                            R.color.colorAccent,
+                            R.color.accent,
                             context.getTheme());
         } else {
             accentColor = context.getResources()
-                    .getColor(R.color.colorAccent);
+                    .getColor(R.color.accent);
         }
     }
 
