@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 
 import com.davidtiagoconceicao.androidmovies.R;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
+import com.davidtiagoconceicao.androidmovies.data.remote.configuration.ConfigurationRepository;
+import com.davidtiagoconceicao.androidmovies.data.remote.genre.GenresRemoteRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepository;
 
 import java.util.List;
@@ -40,7 +42,10 @@ public class MainActivity extends AppCompatActivity
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        new UpcomingListPresenter(this, new MoviesRemoteRepository());
+        new UpcomingListPresenter(this,
+                new MoviesRemoteRepository(),
+                new GenresRemoteRepository(),
+                new ConfigurationRepository());
     }
 
     @Override

@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
 
 public final class GenresRemoteRepository {
 
-    public static Observable<Genre> getGenres() {
+    public Observable<Genre> getGenres() {
         return RetrofitServiceGenerator.generateService(GenresEndpoint.class)
                 .getGenres()
                 .map(new Func1<GenresListResponse, List<GenreResponse>>() {

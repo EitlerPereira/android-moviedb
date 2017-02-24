@@ -34,7 +34,10 @@ public abstract class Movie implements Parcelable {
     @Nullable
     public abstract List<Genre> genres();
 
-    public abstract Movie withGenres(List<Genre> genres);
+    public abstract Movie withDetails(
+            List<Genre> genres,
+            String posterPath,
+            String backdropPath);
 
     public static Builder builder() {
         return new AutoValue_Movie.Builder();

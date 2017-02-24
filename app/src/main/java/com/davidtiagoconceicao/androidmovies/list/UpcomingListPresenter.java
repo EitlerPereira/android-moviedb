@@ -4,7 +4,9 @@ import android.util.Log;
 import android.util.LongSparseArray;
 
 import com.davidtiagoconceicao.androidmovies.data.Genre;
+import com.davidtiagoconceicao.androidmovies.data.ImageConfiguration;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
+import com.davidtiagoconceicao.androidmovies.data.remote.configuration.ConfigurationRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.genre.GenresRemoteRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepository;
 
@@ -27,17 +29,24 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
     private final CompositeSubscription compositeSubscription;
     private final UpcomingListContract.View view;
     private final MoviesRemoteRepository moviesRemoteRepository;
+    private final GenresRemoteRepository genresRemoteRepository;
+    private final ConfigurationRepository configurationRepository;
 
     private int currentPageCount;
 
     private LongSparseArray<Genre> genres;
+    private ImageConfiguration imageConfiguration;
 
     UpcomingListPresenter(
             UpcomingListContract.View view,
-            MoviesRemoteRepository moviesRemoteRepository) {
+            MoviesRemoteRepository moviesRemoteRepository,
+            GenresRemoteRepository genresRemoteRepository,
+            ConfigurationRepository configurationRepository) {
 
         this.view = view;
         this.moviesRemoteRepository = moviesRemoteRepository;
+        this.genresRemoteRepository = genresRemoteRepository;
+        this.configurationRepository = configurationRepository;
         this.compositeSubscription = new CompositeSubscription();
 
         this.view.setPresenter(this);
@@ -52,13 +61,17 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
             genres = new LongSparseArray<>();
 
             compositeSubscription.add(
-                    GenresRemoteRepository.getGenres()
+                    genresRemoteRepository.getGenres()
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<Genre>() {
 
                                 @Override
                                 public void onCompleted() {
-                                    refresh();
+                                    if (imageConfiguration == null) {
+                                        loadImageConfiguration();
+                                    } else {
+                                        refresh();
+                                    }
                                 }
 
                                 @Override
@@ -77,7 +90,6 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
         }
     }
 
-
     @Override
     public void onDetach() {
         compositeSubscription.clear();
@@ -95,7 +107,9 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
         loadMoreItems();
     }
 
-    private void loadMoreItems() {
+    //Called by inner classes, default avoid accessors
+    @SuppressWarnings("WeakerAccess")
+    void loadMoreItems() {
         view.showLoading(true);
         compositeSubscription.add(
                 moviesRemoteRepository.getUpcoming(currentPageCount)
@@ -109,7 +123,20 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
                                         selectedGenres.add(genre);
                                     }
                                 }
-                                return movie.withGenres(selectedGenres);
+
+                                String backdropPath = movie.backdropPath();
+                                if (backdropPath != null) {
+                                    backdropPath = imageConfiguration.backdropBaseUrl() + backdropPath;
+                                }
+                                String posterPath = movie.posterPath();
+                                if (posterPath != null) {
+                                    posterPath = imageConfiguration.posterBaseUrl() + posterPath;
+                                }
+
+                                return movie.withDetails(
+                                        selectedGenres,
+                                        posterPath,
+                                        backdropPath);
                             }
                         })
                         .toList()
@@ -135,4 +162,29 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
                             }
                         }));
     }
+
+    //Called by inner classes, default avoid accessors
+    @SuppressWarnings("WeakerAccess")
+    void loadImageConfiguration() {
+        compositeSubscription.add(
+                configurationRepository.getImageConfiguration()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<ImageConfiguration>() {
+                            @Override
+                            public void onCompleted() {
+                                refresh();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                //TODO show error
+                            }
+
+                            @Override
+                            public void onNext(ImageConfiguration imageConfigurationResponse) {
+                                imageConfiguration = imageConfigurationResponse;
+                            }
+                        }));
+    }
+
 }
