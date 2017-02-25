@@ -5,12 +5,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.davidtiagoconceicao.androidmovies.R;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
 import com.davidtiagoconceicao.androidmovies.data.remote.configuration.ConfigurationRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.genre.GenresRemoteRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepository;
+import com.davidtiagoconceicao.androidmovies.search.SearchActivity;
 
 import java.util.List;
 
@@ -21,6 +25,9 @@ public class MainActivity extends AppCompatActivity
         implements UpcomingListContract.View, LoadMoreScrollListener.LoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private UpcomingListContract.Presenter presenter;
+
+    @BindView(R.id.main_toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.main_movies_recycler)
     RecyclerView recyclerView;
@@ -37,10 +44,11 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         moviesAdapter = new MoviesAdapter(this);
-        recyclerView.setAdapter(
-                moviesAdapter);
+        recyclerView.setAdapter(moviesAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        setSupportActionBar(toolbar);
 
         new UpcomingListPresenter(this,
                 new MoviesRemoteRepository(),
@@ -58,6 +66,22 @@ public class MainActivity extends AppCompatActivity
     protected void onStop() {
         presenter.onDetach();
         super.onStop();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(0, 1, 1, R.string.search);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == 1) {
+            SearchActivity.starForContext(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

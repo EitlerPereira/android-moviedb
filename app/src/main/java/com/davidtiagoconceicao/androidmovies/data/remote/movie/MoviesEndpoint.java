@@ -13,7 +13,11 @@ import rx.Observable;
 interface MoviesEndpoint {
 
     @GET("movie/upcoming")
-    Observable<UpcomingMoviesResponse> getUpcoming(
+    Observable<MoviesQueryResponse> getUpcoming(
             @Query("page") int requestedPage);
+
+    @GET("search/movie")
+    Observable<MoviesQueryResponse> getSearchResults(
+            @Query("query") String query);
 
 }

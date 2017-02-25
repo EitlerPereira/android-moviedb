@@ -13,11 +13,11 @@ import java.util.List;
  */
 
 @AutoValue
-public abstract class UpcomingMoviesResponse {
+public abstract class MoviesQueryResponse {
 
     public abstract List<MovieResponse> results();
 
-    public static TypeAdapter<UpcomingMoviesResponse> typeAdapter(Gson gson) {
-        return new AutoValue_UpcomingMoviesResponse.GsonTypeAdapter(gson);
+    public static TypeAdapter<MoviesQueryResponse> typeAdapter(Gson gson) {
+        return new AutoValue_MoviesQueryResponse.GsonTypeAdapter(gson);
     }
 }

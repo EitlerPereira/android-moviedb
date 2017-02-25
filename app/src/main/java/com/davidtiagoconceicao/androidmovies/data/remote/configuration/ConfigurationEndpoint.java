@@ -1,9 +1,6 @@
 package com.davidtiagoconceicao.androidmovies.data.remote.configuration;
 
-import com.davidtiagoconceicao.androidmovies.data.remote.movie.UpcomingMoviesResponse;
-
 import retrofit2.http.GET;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**

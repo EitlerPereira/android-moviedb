@@ -28,13 +28,13 @@ import butterknife.ButterKnife;
  * Created by david on 22/02/17.
  */
 
-final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
+public final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
     private final List<Movie> movies;
     private final LayoutInflater inflater;
     private final Picasso picasso;
 
-    MoviesAdapter(Context context) {
+    public MoviesAdapter(Context context) {
 
         inflater = LayoutInflater.from(context);
 
@@ -74,12 +74,12 @@ final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder>
         return movies.size();
     }
 
-    void addMovie(List<Movie> movies) {
+    public void addMovie(List<Movie> movies) {
         this.movies.addAll(movies);
         notifyDataSetChanged();
     }
 
-    void clearList() {
+    public void clearList() {
         this.movies.clear();
         notifyDataSetChanged();
     }

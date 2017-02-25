@@ -19,26 +19,50 @@ public final class MoviesRemoteRepository {
     public Observable<Movie> getUpcoming(int page) {
         return RetrofitServiceGenerator.generateService(MoviesEndpoint.class)
                 .getUpcoming(page)
-                .flatMapIterable(new Func1<UpcomingMoviesResponse, Iterable<MovieResponse>>() {
+                .flatMapIterable(new Func1<MoviesQueryResponse, Iterable<MovieResponse>>() {
                     @Override
-                    public Iterable<MovieResponse> call(UpcomingMoviesResponse envelopeResponse) {
+                    public Iterable<MovieResponse> call(MoviesQueryResponse envelopeResponse) {
                         return envelopeResponse.results();
                     }
                 })
                 .map(new Func1<MovieResponse, Movie>() {
                     @Override
                     public Movie call(MovieResponse movieResponse) {
-                        return Movie.builder()
-                                .title(movieResponse.title())
-                                .overview(movieResponse.overview())
-                                .posterPath(movieResponse.posterPath())
-                                .backdropPath(movieResponse.backdropPath())
-                                .releaseDate(
-                                        DateFormatUtil.parseDate(movieResponse.releaseDate()))
-                                .genreIds(movieResponse.genreIds())
-                                .build();
+                        return mapMovie(movieResponse);
                     }
                 })
                 .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<Movie> searchMovie(String query) {
+        return RetrofitServiceGenerator.generateService(MoviesEndpoint.class)
+                .getSearchResults(query)
+                .flatMapIterable(new Func1<MoviesQueryResponse, Iterable<MovieResponse>>() {
+                    @Override
+                    public Iterable<MovieResponse> call(MoviesQueryResponse envelopeResponse) {
+                        return envelopeResponse.results();
+                    }
+                })
+                .map(new Func1<MovieResponse, Movie>() {
+                    @Override
+                    public Movie call(MovieResponse movieResponse) {
+                        return mapMovie(movieResponse);
+                    }
+                })
+                .subscribeOn(Schedulers.io());
+    }
+
+    //Called by inner classes
+    @SuppressWarnings("WeakerAccess")
+    Movie mapMovie(MovieResponse movieResponse) {
+        return Movie.builder()
+                .title(movieResponse.title())
+                .overview(movieResponse.overview())
+                .posterPath(movieResponse.posterPath())
+                .backdropPath(movieResponse.backdropPath())
+                .releaseDate(
+                        DateFormatUtil.parseDate(movieResponse.releaseDate()))
+                .genreIds(movieResponse.genreIds())
+                .build();
     }
 }
