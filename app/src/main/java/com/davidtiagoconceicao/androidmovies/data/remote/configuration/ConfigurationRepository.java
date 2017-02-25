@@ -1,9 +1,12 @@
 package com.davidtiagoconceicao.androidmovies.data.remote.configuration;
 
+import android.support.annotation.Nullable;
+
 import com.davidtiagoconceicao.androidmovies.commons.retrofit.RetrofitServiceGenerator;
 import com.davidtiagoconceicao.androidmovies.data.ImageConfiguration;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -17,6 +20,8 @@ import rx.schedulers.Schedulers;
 
 public final class ConfigurationRepository {
 
+    private static final String SIZE_REGEX = "w\\d*";
+
     public Observable<ImageConfiguration> getImageConfiguration() {
         return RetrofitServiceGenerator.generateService(ConfigurationEndpoint.class)
                 .getConfiguration()
@@ -28,11 +33,9 @@ public final class ConfigurationRepository {
 
                         String baseUrl = configurationResponse.baseUrl();
 
-                        List<String> backdropSizes = configurationResponse.backdropSizes();
-                        String backdropUrl = baseUrl + backdropSizes.get(backdropSizes.size() - 1);
+                        String backdropUrl = baseUrl + getBiggestSize(configurationResponse.backdropSizes());
 
-                        List<String> posterSizes = configurationResponse.posterSizes();
-                        String posterUrl = baseUrl + posterSizes.get(posterSizes.size() - 1);
+                        String posterUrl = baseUrl + getBiggestSize(configurationResponse.posterSizes());
 
                         return
                                 ImageConfiguration.builder()
@@ -42,5 +45,21 @@ public final class ConfigurationRepository {
                     }
                 })
                 .subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * Gets the biggest image size, discarding the original size.
+     */
+    @SuppressWarnings("WeakerAccess")
+    @Nullable
+    String getBiggestSize(List<String> descriptionSizes) {
+        Pattern pattern = Pattern.compile(SIZE_REGEX);
+        String returnValue = null;
+        for (String descriptionSize : descriptionSizes) {
+            if (pattern.matcher(descriptionSize).matches()) {
+                returnValue = descriptionSize;
+            }
+        }
+        return returnValue;
     }
 }
