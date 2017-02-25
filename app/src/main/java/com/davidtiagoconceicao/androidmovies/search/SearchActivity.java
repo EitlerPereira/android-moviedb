@@ -70,7 +70,7 @@ public final class SearchActivity extends AppCompatActivity implements SearchCon
         recyclerView.setAdapter(moviesAdapter);
 
         queryEdit.addTextChangedListener(
-                new EditTextWatcher(presenter));
+                new EditTextWatcher(this));
 
         new SearchPresenter(
                 this,
@@ -115,11 +115,12 @@ public final class SearchActivity extends AppCompatActivity implements SearchCon
     }
 
     private static final class EditTextWatcher implements TextWatcher {
-        private final SearchContract.Presenter presenter;
 
-        EditTextWatcher(SearchContract.Presenter presenter) {
+        private final SearchActivity searchActivity;
 
-            this.presenter = presenter;
+        EditTextWatcher(SearchActivity searchActivity) {
+
+            this.searchActivity = searchActivity;
         }
 
         @Override
@@ -134,7 +135,7 @@ public final class SearchActivity extends AppCompatActivity implements SearchCon
 
         @Override
         public void afterTextChanged(Editable editable) {
-            presenter.search(editable.toString());
+            searchActivity.presenter.search(editable.toString());
         }
     }
 }
