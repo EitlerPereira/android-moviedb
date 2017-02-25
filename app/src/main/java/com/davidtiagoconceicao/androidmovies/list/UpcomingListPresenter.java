@@ -185,7 +185,7 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
 
                             @Override
                             public void onError(Throwable e) {
-                                //TODO show error
+                                handleException(e);
                             }
 
                             @Override

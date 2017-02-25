@@ -31,7 +31,6 @@ public final class DateFormatUtil {
 
         } catch (ParseException e) {
             e.printStackTrace();
-            //TODO better handle exception
             return null;
         }
     }
