@@ -19,6 +19,8 @@ final class SearchContract {
         void showResult(List<Movie> movie);
 
         void showLoading(boolean show);
+
+        void showErrorLoading();
     }
 
     interface Presenter extends BasePresenter {

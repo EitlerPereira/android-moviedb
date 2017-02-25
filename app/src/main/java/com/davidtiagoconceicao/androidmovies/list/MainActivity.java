@@ -1,6 +1,8 @@
 package com.davidtiagoconceicao.androidmovies.list;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,9 +24,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements UpcomingListContract.View, LoadMoreScrollListener.LoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+        implements UpcomingListContract.View,
+        LoadMoreScrollListener.LoadMoreListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
-    private UpcomingListContract.Presenter presenter;
+    @BindView(R.id.main_coordinator)
+    CoordinatorLayout coordinatorLayout;
 
     @BindView(R.id.main_toolbar)
     Toolbar toolbar;
@@ -36,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     SwipeRefreshLayout swipeRefreshLayout;
 
     private MoviesRecyclerAdapter moviesAdapter;
+
+    private UpcomingListContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +118,12 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView.addOnScrollListener(
                 new LoadMoreScrollListener(layoutManager, this));
+    }
+
+    @Override
+    public void showErrorLoading() {
+        Snackbar.make(coordinatorLayout, R.string.error_loading, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     @Override

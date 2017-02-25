@@ -21,6 +21,8 @@ final class UpcomingListContract {
         void showLoading(boolean show);
 
         void clearList();
+
+        void showErrorLoading();
     }
 
     interface Presenter extends BasePresenter {

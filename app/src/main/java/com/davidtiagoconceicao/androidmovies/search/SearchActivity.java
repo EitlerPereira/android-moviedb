@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +34,9 @@ import butterknife.ButterKnife;
  */
 
 public final class SearchActivity extends AppCompatActivity implements SearchContract.View {
+
+    @BindView(R.id.search_coordinator)
+    CoordinatorLayout coordinatorLayout;
 
     @BindView(R.id.search_toolbar)
     Toolbar toolbar;
@@ -98,6 +103,12 @@ public final class SearchActivity extends AppCompatActivity implements SearchCon
         } else {
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showErrorLoading() {
+        Snackbar.make(coordinatorLayout, R.string.error_loading, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     private static final class NavigationClickListener implements View.OnClickListener {

@@ -1,5 +1,6 @@
 package com.davidtiagoconceicao.androidmovies.search;
 
+import android.util.Log;
 import android.util.LongSparseArray;
 
 import com.davidtiagoconceicao.androidmovies.data.Genre;
@@ -74,7 +75,7 @@ final class SearchPresenter implements SearchContract.Presenter {
 
                             @Override
                             public void onError(Throwable e) {
-                                //TODO show error
+                                handleException(e);
                             }
 
                             @Override
@@ -107,7 +108,7 @@ final class SearchPresenter implements SearchContract.Presenter {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    //TODO show error
+                                    handleException(e);
                                 }
 
                                 @Override
@@ -119,6 +120,14 @@ final class SearchPresenter implements SearchContract.Presenter {
         } else {
             queryRepository(query);
         }
+    }
+
+    //Called by inner classes, default avoid accessors
+    @SuppressWarnings("WeakerAccess")
+    void handleException(Throwable e) {
+        Log.e(getClass().getSimpleName(), "Exception on stream", e);
+        view.showErrorLoading();
+        view.showLoading(false);
     }
 
     //Called by inner classes
@@ -163,7 +172,7 @@ final class SearchPresenter implements SearchContract.Presenter {
 
                             @Override
                             public void onError(Throwable e) {
-                                //TODO show error
+                                handleException(e);
                             }
 
                             @Override

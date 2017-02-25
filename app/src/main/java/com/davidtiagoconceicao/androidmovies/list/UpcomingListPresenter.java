@@ -12,6 +12,7 @@ import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepos
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.LogManager;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -76,7 +77,7 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    //TODO show error
+                                    handleException(e);
                                 }
 
                                 @Override
@@ -105,6 +106,14 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
     public void refresh() {
         currentPageCount = 1;
         loadMoreItems();
+    }
+
+    //Called by inner classes, default avoid accessors
+    @SuppressWarnings("WeakerAccess")
+    void handleException(Throwable e) {
+        Log.e(getClass().getSimpleName(), "Exception on stream", e);
+        view.showErrorLoading();
+        view.showLoading(false);
     }
 
     //Called by inner classes, default avoid accessors
@@ -149,8 +158,7 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
 
                             @Override
                             public void onError(Throwable e) {
-                                //TODO show error
-                                Log.e("upcomingList", "onError", e);
+                                handleException(e);
                             }
 
                             @Override
