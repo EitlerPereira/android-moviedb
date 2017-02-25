@@ -3,6 +3,7 @@ package com.davidtiagoconceicao.androidmovies.list;
 import android.util.Log;
 import android.util.LongSparseArray;
 
+import com.davidtiagoconceicao.androidmovies.commons.MovieUtil;
 import com.davidtiagoconceicao.androidmovies.data.Genre;
 import com.davidtiagoconceicao.androidmovies.data.ImageConfiguration;
 import com.davidtiagoconceicao.androidmovies.data.Movie;
@@ -10,9 +11,7 @@ import com.davidtiagoconceicao.androidmovies.data.remote.configuration.Configura
 import com.davidtiagoconceicao.androidmovies.data.remote.genre.GenresRemoteRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.LogManager;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -61,30 +60,7 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
 
             genres = new LongSparseArray<>();
 
-            compositeSubscription.add(
-                    genresRemoteRepository.getGenres()
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<Genre>() {
-
-                                @Override
-                                public void onCompleted() {
-                                    if (imageConfiguration == null) {
-                                        loadImageConfiguration();
-                                    } else {
-                                        refresh();
-                                    }
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    handleException(e);
-                                }
-
-                                @Override
-                                public void onNext(Genre genre) {
-                                    genres.put(genre.id(), genre);
-                                }
-                            }));
+            loadGenres();
 
         } else if (currentPageCount == 0) {
             refresh();
@@ -125,27 +101,7 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
                         .map(new Func1<Movie, Movie>() {
                             @Override
                             public Movie call(Movie movie) {
-                                List<Genre> selectedGenres = new ArrayList<>();
-                                for (Long id : movie.genreIds()) {
-                                    Genre genre = genres.get(id);
-                                    if (genre != null) {
-                                        selectedGenres.add(genre);
-                                    }
-                                }
-
-                                String backdropPath = movie.backdropPath();
-                                if (backdropPath != null) {
-                                    backdropPath = imageConfiguration.backdropBaseUrl() + backdropPath;
-                                }
-                                String posterPath = movie.posterPath();
-                                if (posterPath != null) {
-                                    posterPath = imageConfiguration.posterBaseUrl() + posterPath;
-                                }
-
-                                return movie.withDetails(
-                                        selectedGenres,
-                                        posterPath,
-                                        backdropPath);
+                                return MovieUtil.mapMovieFields(movie, imageConfiguration, genres);
                             }
                         })
                         .toList()
@@ -167,6 +123,35 @@ final class UpcomingListPresenter implements UpcomingListContract.Presenter {
                                     view.clearList();
                                 }
                                 view.addMovies(movies);
+                            }
+                        }));
+    }
+
+    //Called by inner classes
+    @SuppressWarnings("WeakerAccess")
+    void loadGenres() {
+        compositeSubscription.add(
+                genresRemoteRepository.getGenres()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Genre>() {
+
+                            @Override
+                            public void onCompleted() {
+                                if (imageConfiguration == null) {
+                                    loadImageConfiguration();
+                                } else {
+                                    refresh();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                handleException(e);
+                            }
+
+                            @Override
+                            public void onNext(Genre genre) {
+                                genres.put(genre.id(), genre);
                             }
                         }));
     }
