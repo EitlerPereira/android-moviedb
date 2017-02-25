@@ -44,6 +44,7 @@ public final class RetrofitServiceGenerator {
                             new HttpLoggingInterceptor()
                                     .setLevel(HttpLoggingInterceptor.Level.BODY))
                     .addInterceptor(new ApiKeyInterceptor())
+                    .addInterceptor(new LanguageInterceptor())
                     .build();
         }
         return okHttpClient;
