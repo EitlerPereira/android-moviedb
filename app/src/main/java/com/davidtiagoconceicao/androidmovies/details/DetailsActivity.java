@@ -89,7 +89,10 @@ public final class DetailsActivity extends AppCompatActivity {
                     .into(imageView);
         }
 
-        titleText.setText(movie.title());
+        String title = movie.title();
+        toolbar.setTitle(title);
+
+        titleText.setText(title);
 
         List<Genre> genres = movie.genres();
 

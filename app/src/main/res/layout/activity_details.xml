@@ -36,7 +36,8 @@
             <ImageView
                 android:id="@+id/details_image"
                 android:layout_width="0dp"
-                android:layout_height="300dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="h,1:1"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="0dp"
