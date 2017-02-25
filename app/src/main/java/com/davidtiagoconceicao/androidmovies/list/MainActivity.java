@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.main_movies_swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    private MoviesAdapter moviesAdapter;
+    private MoviesRecyclerAdapter moviesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        moviesAdapter = new MoviesAdapter(this);
+        moviesAdapter = new MoviesRecyclerAdapter(
+                MoviesRecyclerAdapter.REGULAR_MODE,
+                this);
+
         recyclerView.setAdapter(moviesAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(this);

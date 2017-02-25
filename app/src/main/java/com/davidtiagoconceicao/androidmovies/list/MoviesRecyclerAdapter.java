@@ -28,13 +28,19 @@ import butterknife.ButterKnife;
  * Created by david on 22/02/17.
  */
 
-public final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
+public final class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder> {
+
+    public static final int REGULAR_MODE = 100;
+    public static final int COMPACT_MODE = 200;
+
+    private final int layoutMode;
 
     private final List<Movie> movies;
     private final LayoutInflater inflater;
     private final Picasso picasso;
 
-    public MoviesAdapter(Context context) {
+    public MoviesRecyclerAdapter(int layoutMode, Context context) {
+        this.layoutMode = layoutMode;
 
         inflater = LayoutInflater.from(context);
 
@@ -45,11 +51,21 @@ public final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(
-                inflater.inflate(
-                        R.layout.row_movie,
-                        parent,
-                        false));
+        if (layoutMode == REGULAR_MODE) {
+            return new ViewHolder(
+                    inflater.inflate(
+                            R.layout.row_movie,
+                            parent,
+                            false));
+        } else if (layoutMode == COMPACT_MODE) {
+            return new ViewHolder(
+                    inflater.inflate(
+                            R.layout.row_compact_movie,
+                            parent,
+                            false));
+        }
+
+        throw new IllegalArgumentException("Invalid layout mode: " + layoutMode);
     }
 
     @Override
@@ -112,10 +128,17 @@ public final class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.View
     }
 
     private void loadImage(ViewHolder holder, String path) {
-        picasso.load(path)
-                .fit()
-                .centerCrop()
-                .into(holder.imageView);
+        if (layoutMode == REGULAR_MODE) {
+            picasso.load(path)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.imageView);
+        } else {
+            picasso.load(path)
+                    .fit()
+                    .centerInside()
+                    .into(holder.imageView);
+        }
     }
 
     static final class ViewHolder extends RecyclerView.ViewHolder {

@@ -18,7 +18,7 @@ import com.davidtiagoconceicao.androidmovies.data.Movie;
 import com.davidtiagoconceicao.androidmovies.data.remote.configuration.ConfigurationRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.genre.GenresRemoteRepository;
 import com.davidtiagoconceicao.androidmovies.data.remote.movie.MoviesRemoteRepository;
-import com.davidtiagoconceicao.androidmovies.list.MoviesAdapter;
+import com.davidtiagoconceicao.androidmovies.list.MoviesRecyclerAdapter;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public final class SearchActivity extends AppCompatActivity implements SearchCon
     ProgressBar progressBar;
 
     private SearchContract.Presenter presenter;
-    private MoviesAdapter moviesAdapter;
+    private MoviesRecyclerAdapter moviesAdapter;
 
     public static void starForContext(Context context) {
         context.startActivity(
@@ -60,25 +60,17 @@ public final class SearchActivity extends AppCompatActivity implements SearchCon
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        moviesAdapter = new MoviesAdapter(this);
+        toolbar.setNavigationOnClickListener(
+                new NavigationClickListener(this));
+
+        moviesAdapter = new MoviesRecyclerAdapter(
+                MoviesRecyclerAdapter.COMPACT_MODE,
+                this);
+
         recyclerView.setAdapter(moviesAdapter);
 
-        queryEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.search(editable.toString());
-            }
-        });
+        queryEdit.addTextChangedListener(
+                new EditTextWatcher(presenter));
 
         new SearchPresenter(
                 this,
@@ -105,6 +97,44 @@ public final class SearchActivity extends AppCompatActivity implements SearchCon
             progressBar.setVisibility(View.VISIBLE);
         } else {
             progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private static final class NavigationClickListener implements View.OnClickListener {
+        private final SearchActivity searchActivity;
+
+        NavigationClickListener(SearchActivity searchActivity) {
+
+            this.searchActivity = searchActivity;
+        }
+
+        @Override
+        public void onClick(View v) {
+            searchActivity.onBackPressed();
+        }
+    }
+
+    private static final class EditTextWatcher implements TextWatcher {
+        private final SearchContract.Presenter presenter;
+
+        EditTextWatcher(SearchContract.Presenter presenter) {
+
+            this.presenter = presenter;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            presenter.search(editable.toString());
         }
     }
 }
