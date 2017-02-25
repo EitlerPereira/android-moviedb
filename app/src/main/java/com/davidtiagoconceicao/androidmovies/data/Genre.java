@@ -1,5 +1,7 @@
 package com.davidtiagoconceicao.androidmovies.data;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 
 /**
@@ -9,7 +11,7 @@ import com.google.auto.value.AutoValue;
  */
 
 @AutoValue
-public abstract class Genre {
+public abstract class Genre implements Parcelable{
 
     public abstract long id();
 

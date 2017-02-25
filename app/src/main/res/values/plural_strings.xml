@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="genre_plural">
+        <item quantity="one">Genre</item>
+        <item quantity="other">Genres</item>
+    </plurals>
+
+</resources>

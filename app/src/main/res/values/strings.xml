@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Android Movies</string>
     <string name="upcoming">Upcoming</string>
+    <string name="genres">Genres</string>
 </resources>
