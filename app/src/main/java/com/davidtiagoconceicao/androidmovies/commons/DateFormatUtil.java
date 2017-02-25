@@ -22,6 +22,9 @@ public final class DateFormatUtil {
             SimpleDateFormat.getDateInstance();
 
     public static Date parseDate(String date) {
+        if (date == null) {
+            return null;
+        }
         try {
 
             return SERVER_FORMATTER.parse(date);
@@ -34,6 +37,9 @@ public final class DateFormatUtil {
     }
 
     public static String formatDate(Date date) {
+        if (date == null) {
+            return "";
+        }
         return SHORT_DATE_FORMATTER.format(date);
     }
 }

@@ -27,6 +27,7 @@ public abstract class Movie implements Parcelable {
     @Nullable
     public abstract String backdropPath();
 
+    @Nullable
     public abstract Date releaseDate();
 
     public abstract List<Long> genreIds();
